@@ -10,7 +10,7 @@ resource "hcloud_server" "default" {
   location = "hil"
   public_net {
     ipv4_enabled = true
-    ipv6_enabled = true
+    ipv6_enabled = false
   }
   ssh_keys = [
     "${hcloud_ssh_key.default.name}"
