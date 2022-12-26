@@ -1,13 +1,13 @@
 resource "hcloud_ssh_key" "default" {
-    name = "default"
-    public_key = var.public_key
+  name       = "default"
+  public_key = var.public_key
 }
 
 resource "hcloud_server" "default" {
   name        = "default"
   image       = "debian-11"
   server_type = "cpx21"
-  location = "hil"
+  location    = "hil"
   public_net {
     ipv4_enabled = true
     ipv6_enabled = false
