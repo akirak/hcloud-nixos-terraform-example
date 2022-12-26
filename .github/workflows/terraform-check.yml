@@ -1,0 +1,29 @@
+name: 'Format and lint'
+
+on:
+  workflow_call:
+    inputs:
+      ref:
+        required: true
+        type: string
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - uses: actions/checkout@v3
+      with:
+      # Explicitly check out a branch if called by a workflow_call event.
+      # Otherwise, check out the default branch.
+        ref: ${{ inputs.ref }}
+
+    - uses: cachix/install-nix-action@v18
+
+    - run: nix profile install .#terraform
+
+    - run: terraform version
+
+    - run: terraform fmt -check
