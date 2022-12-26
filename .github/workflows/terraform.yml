@@ -1,0 +1,76 @@
+# Based on https://developer.hashicorp.com/terraform/tutorials/automation/github-actions
+# See the article for details
+name: 'Terraform'
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  terraform:
+    name: 'Terraform'
+
+    runs-on: ubuntu-latest
+
+    env:
+      TF_TOKEN_app_terraform_io: ${{ secrets.TF_TOKEN_APP_TERRAFORM_IO }}
+
+    steps:
+
+    - uses: actions/checkout@v3
+
+    - uses: cachix/install-nix-action@v18
+
+    - run: nix profile install .#terraform
+
+    - run: terraform version
+
+    - run: terraform fmt -check
+
+    - run: terraform init
+
+    - run: terraform validate -no-color
+      id: validate
+
+    - run: terraform plan -no-color -input=false
+      id: plan
+      if: github.event_name == 'pull_request'
+      continue-on-error: true
+
+    - if: github.event_name == 'pull_request'
+      uses: actions/github-script@v6
+      env:
+        PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
+          #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
+          #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+          #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
+
+          <details><summary>Show Plan</summary>
+
+          \`\`\`\n
+          ${process.env.PLAN}
+          \`\`\`
+
+          </details>
+
+          *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
+
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: output
+          })
+
+    - if: steps.plan.outcome == 'failure'
+      run: exit 1
+
+    - if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+      run: terraform apply -auto-approve -input=false

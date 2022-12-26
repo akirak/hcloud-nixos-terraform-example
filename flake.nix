@@ -29,6 +29,10 @@
             pkgs.terraform
           ];
         };
+        packages = {
+          # Expose terraform package to allow installation on CI
+          inherit (pkgs) terraform;
+        };
       };
     };
 }
