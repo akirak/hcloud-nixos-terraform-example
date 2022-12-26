@@ -1,0 +1,8 @@
+.gcroots
+
+# Terraform
+*.tfvars
+*.tfstate
+*.tfstate.*
+.terraform
+.terraform.*
