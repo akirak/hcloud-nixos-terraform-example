@@ -20,7 +20,6 @@ resource "hcloud_server" "default" {
   }
   ssh_keys = [
     "${hcloud_ssh_key.default.name}",
-    "${hcloud_ssh_key.secondary.name}",
   ]
   # user_data = file("hcloud/user_data.yaml")
 
