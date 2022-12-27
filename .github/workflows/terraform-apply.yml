@@ -48,6 +48,6 @@ jobs:
     - run: terraform validate
 
     - run: terraform apply -auto-approve -input=false
-      env:
-        TF_VAR_hcloud_token: ${{secrets.TF_VAR_HCLOUD_TOKEN}}
-        TF_VAR_public_key: ${{secrets.TF_VAR_PUBLIC_KEY}}
+      # env:
+      #   TF_VAR_hcloud_token: ${{secrets.TF_VAR_HCLOUD_TOKEN}}
+      #   TF_VAR_public_key: ${{secrets.TF_VAR_PUBLIC_KEY}}
