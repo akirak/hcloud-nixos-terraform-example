@@ -3,6 +3,11 @@ resource "hcloud_ssh_key" "default" {
   public_key = var.public_key
 }
 
+resource "hcloud_ssh_key" "secondary" {
+  name       = "secondary"
+  public_key = var.public_key_2
+}
+
 resource "local_sensitive_file" "private_key" {
   filename        = "${path.module}/terraform-cloud.pem"
   content         = var.private_key
@@ -20,6 +25,7 @@ resource "hcloud_server" "default" {
   }
   ssh_keys = [
     "${hcloud_ssh_key.default.name}",
+    "${hcloud_ssh_key.secondary.name}",
   ]
   # user_data = file("hcloud/user_data.yaml")
 
