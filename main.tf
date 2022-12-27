@@ -38,7 +38,7 @@ resource "hcloud_server" "default" {
 
   provisioner "remote-exec" {
     inline = [
-      "command -v nix || curl https://raw.githubusercontent.com/elitak/nixos-infect/master/nixos-infect | NIX_CHANNEL=nixos-22.11 NO_REBOOT=1 bash 2>&1 | tee /tmp/infect.log",
+      "curl https://raw.githubusercontent.com/elitak/nixos-infect/master/nixos-infect | NIX_CHANNEL=nixos-22.11 NO_REBOOT=1 bash 2>&1 | tee /tmp/infect.log",
       "/nix/var/nix/profiles/system/bin/switch-to-configuration switch",
       "systemd-run --on-active=1 shutdown -r now"
     ]
