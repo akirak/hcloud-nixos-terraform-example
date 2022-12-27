@@ -6,3 +6,7 @@ variable "hcloud_token" {
 variable "public_key" {
   type = string
 }
+
+variable "public_key_2" {
+  type = string
+}
