@@ -24,9 +24,9 @@ resource "hcloud_server" "default" {
   # user_data = file("hcloud/user_data.yaml")
 
   connection {
-    type = "ssh"
-    user = "root"
-    host = self.ipv4_address
+    type        = "ssh"
+    user        = "root"
+    host        = self.ipv4_address
     private_key = file("terraform-cloud.pem")
   }
 
