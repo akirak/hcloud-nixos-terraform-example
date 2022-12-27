@@ -3,11 +3,6 @@ resource "hcloud_ssh_key" "default" {
   public_key = var.public_key
 }
 
-resource "hcloud_ssh_key" "yubikey" {
-  name       = "yubikey"
-  public_key = var.public_key_2
-}
-
 resource "hcloud_server" "default" {
   name        = "default"
   image       = "debian-11"
@@ -19,7 +14,6 @@ resource "hcloud_server" "default" {
   }
   ssh_keys = [
     "${hcloud_ssh_key.default.name}",
-    "${hcloud_ssh_key.yubikey.name}"
   ]
   # user_data = file("hcloud/user_data.yaml")
 
