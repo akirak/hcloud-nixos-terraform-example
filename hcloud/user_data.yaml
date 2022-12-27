@@ -1,4 +1,5 @@
 #cloud-config
 runcmd:
-  - curl https://gist.githubusercontent.com/akirak/13891821a8cd136c6e8c6737e51a6f67/raw/795eaf49eedcf85f644a574aa91f1cf55a3aa598/configuration.nix > /etc/nixos/configuration.nix
-  - curl https://raw.githubusercontent.com/elitak/nixos-infect/master/nixos-infect | NIX_CHANNEL=nixos-22.11 NIXOS_CONFIG=/etc/nixos/configuration.nix bash 2>&1 | tee /tmp/infect.log
+  - mkdir -p /etc/nixos
+  - curl https://gist.githubusercontent.com/akirak/13891821a8cd136c6e8c6737e51a6f67/raw/795eaf49eedcf85f644a574aa91f1cf55a3aa598/configuration.nix > /etc/nixos/configuration2.nix
+  - curl https://raw.githubusercontent.com/elitak/nixos-infect/master/nixos-infect | NIX_CHANNEL=nixos-22.11 NIXOS_CONFIG=/etc/nixos/configuration2.nix bash 2>&1 | tee /tmp/infect.log
