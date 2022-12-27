@@ -32,9 +32,7 @@ resource "hcloud_server" "default" {
 
   provisioner "remote-exec" {
     inline = [
-      # I need to watch the progress of nixos-infect, so I would prefer running it inside remote-exec rather than cloud-init
-      "curl https://raw.githubusercontent.com/akirak/nixos-infect/flakes/nixos-infect | NIX_CHANNEL=nixos-22.11 FLAKE_URL=github:akirak/homelab/basic-hcloud NIXOS_CONFIG_NAME=hcloud-basic NO_REBOOT=1 bash 2>&1 | tee /var/log/infect.log",
-      "shutdown -r 3"
+      "command -v nix || curl https://raw.githubusercontent.com/elitak/nixos-infect/master/nixos-infect | NIX_CHANNEL=nixos-22.11 NO_REBOOT=1 bash 2>&1 | tee /tmp/infect.log"
     ]
   }
 }
