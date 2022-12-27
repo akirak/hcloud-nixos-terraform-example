@@ -6,3 +6,6 @@
 *.tfstate.*
 .terraform
 .terraform.*
+
+# SSH private keys
+*.pem
