@@ -3,6 +3,11 @@ resource "hcloud_ssh_key" "default" {
   public_key = var.public_key
 }
 
+resource "local_provider" "private_key" {
+  content = var.private_key
+  filename = "${path.module}/identity.pem"
+}
+
 resource "hcloud_server" "default" {
   name        = "default"
   image       = "debian-11"
@@ -16,6 +21,13 @@ resource "hcloud_server" "default" {
     "${hcloud_ssh_key.default.name}"
   ]
   user_data = file("hcloud/user_data.yaml")
+
+  connection {
+    type = "ssh"
+    user = "root"
+    host = self.ip_v4_address
+    private_key = file("${path.module}/identity.pem")
+  }
 
   provisioner "remote-exec" {
     inline = [
