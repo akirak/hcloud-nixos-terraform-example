@@ -16,4 +16,10 @@ resource "hcloud_server" "default" {
     "${hcloud_ssh_key.default.name}"
   ]
   user_data = file("hcloud/user_data.yaml")
+
+  provisioner "remote-exec" {
+    inline = [
+      "which nix"
+    ]
+  }
 }
