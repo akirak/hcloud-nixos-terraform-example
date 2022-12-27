@@ -1,3 +1,8 @@
+locals {
+  nixos_flake  = "github:akirak/homelab/basic-hcloud"
+  nixos_config = "hcloud-basic"
+}
+
 resource "hcloud_ssh_key" "default" {
   name       = "default"
   public_key = var.public_key
@@ -32,7 +37,7 @@ resource "hcloud_server" "default" {
 
   provisioner "remote-exec" {
     inline = [
-      "curl https://raw.githubusercontent.com/akirak/nixos-infect/flakes/nixos-infect | NIX_CHANNEL=nixos-22.11 FLAKE_URL=github:akirak/homelab/basic-hcloud NIXOS_CONFIG_NAME=hcloud-basic NO_REBOOT=1 bash 2>&1 | tee /tmp/infect.log",
+      "curl https://raw.githubusercontent.com/akirak/nixos-infect/flakes/nixos-infect | NIX_CHANNEL=nixos-22.11 FLAKE_URL=${local.nixos_flake} NIXOS_CONFIG_NAME=${local.nixos_config} NO_REBOOT=1 bash 2>&1 | tee /tmp/infect.log",
       # "/nix/var/nix/profiles/system/bin/switch-to-configuration switch",
       "systemd-run --on-active=1 shutdown -r now"
     ]
