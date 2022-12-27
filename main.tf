@@ -3,6 +3,10 @@ resource "hcloud_ssh_key" "default" {
   public_key = var.public_key
 }
 
+data "local_sensitive_file" "private_key" {
+  filename = "${path.module}/terraform-cloud.pem"
+}
+
 resource "hcloud_server" "default" {
   name        = "default"
   image       = "debian-11"
@@ -21,7 +25,7 @@ resource "hcloud_server" "default" {
     type        = "ssh"
     user        = "root"
     host        = self.ipv4_address
-    private_key = file("terraform-cloud.pem")
+    private_key = data.local_sensitive_file.private_key.content
   }
 
   provisioner "remote-exec" {
