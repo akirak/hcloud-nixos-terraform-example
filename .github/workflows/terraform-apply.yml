@@ -40,4 +40,11 @@ jobs:
 
     - run: terraform validate
 
+    - name: Create a private key for remote-exec
+      run: |
+        echo "$PRIVATE_KEY" > terraform-cloud.pem
+        chmod 600 terraform-cloud.pem
+      env:
+        PRIVATE_KEY: ${{secrets.TARGET_PRIVATE_KEY}}
+
     - run: terraform apply -auto-approve -input=false
