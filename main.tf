@@ -27,7 +27,7 @@ resource "hcloud_server" "default" {
     type        = "ssh"
     user        = "root"
     host        = self.ipv4_address
-    private_key = local_sensitive_file.private_key.filename
+    private_key = file("${path.module}/terraform-cloud.pem")
   }
 
   provisioner "remote-exec" {
