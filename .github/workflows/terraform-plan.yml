@@ -26,13 +26,6 @@ jobs:
 
     - run: terraform init
 
-    - name: Create a private key for remote-exec
-      run: |
-        echo "$PRIVATE_KEY" > terraform-cloud.pem
-        chmod 600 terraform-cloud.pem
-      env:
-        PRIVATE_KEY: ${{secrets.TARGET_PRIVATE_KEY}}
-
     - run: terraform validate
 
     - uses: aquasecurity/tfsec-pr-commenter-action@v1.3.1
