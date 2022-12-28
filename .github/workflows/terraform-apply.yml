@@ -6,9 +6,6 @@ on:
       - master
   workflow_dispatch:
 
-env:
-  TF_TOKEN_app_terraform_io: ${{ secrets.TF_TOKEN_APP_TERRAFORM_IO }}
-
 jobs:
   check:
     uses: ./.github/workflows/terraform-check.yml
@@ -41,6 +38,3 @@ jobs:
     - run: terraform validate
 
     - run: terraform apply -auto-approve -input=false
-      # env:
-      #   TF_VAR_hcloud_token: ${{secrets.TF_VAR_HCLOUD_TOKEN}}
-      #   TF_VAR_public_key: ${{secrets.TF_VAR_PUBLIC_KEY}}
