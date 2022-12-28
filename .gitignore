@@ -9,3 +9,8 @@
 
 # SSH private keys
 *.pem
+
+# Devenv
+.devenv*
+devenv.local.nix
+
