@@ -1,6 +1,6 @@
 locals {
-  nixos_flake  = "github:akirak/homelab/basic-hcloud"
-  nixos_config = "hcloud-basic"
+  nixos_config = "github:akirak/homelab/hcloud-basic-remote#hcloud-basic"
+  disko_config = "github:akirak/homelab/hcloud-basic-remote#hcloud"
 }
 
 resource "hcloud_ssh_key" "default" {
@@ -12,6 +12,14 @@ resource "local_sensitive_file" "private_key" {
   filename        = "${path.module}/terraform-cloud.pem"
   content         = var.private_key
   file_permission = "0600"
+}
+
+resource "local_file" "nixos_installer" {
+  filename = "install-nixos.sh"
+  content = templatefile("${path.module}/install-nixos.sh", {
+    "nixos_config" : local.nixos_config
+    "disko_config" : local.disko_config
+  })
 }
 
 resource "hcloud_server" "default" {
@@ -26,7 +34,6 @@ resource "hcloud_server" "default" {
   ssh_keys = [
     "${hcloud_ssh_key.default.name}",
   ]
-  # user_data = file("hcloud/user_data.yaml")
 
   connection {
     type        = "ssh"
@@ -37,9 +44,21 @@ resource "hcloud_server" "default" {
 
   provisioner "remote-exec" {
     inline = [
-      "curl https://raw.githubusercontent.com/akirak/nixos-infect/flakes/nixos-infect | NIX_CHANNEL=nixos-22.11 FLAKE_URL=${local.nixos_flake} NIXOS_CONFIG_NAME=${local.nixos_config} NO_REBOOT=1 bash 2>&1 | tee /tmp/infect.log",
-      # "/nix/var/nix/profiles/system/bin/switch-to-configuration switch",
-      "systemd-run --on-active=1 shutdown -r now"
+      "apt-get update",
+      "DEBIAN_FRONTEND=noninteractive apt-get install kexec-tools",
+      "curl -L https://github.com/nix-community/nixos-images/releases/download/nixos-unstable/nixos-kexec-installer-x86_64-linux.tar.gz | tar -xzf- -C /root",
+      "/root/kexec/run",
+      # Keep the session open before the machine starts booting into NixOS
+      "sleep 6"
     ]
+  }
+
+  provisioner "remote-exec" {
+    script = local_file.nixos_installer.filename
+  }
+
+  # Wait for NixOS to reboot
+  provisioner "local-exec" {
+    command = "sleep 10"
   }
 }
