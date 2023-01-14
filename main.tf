@@ -37,9 +37,8 @@ resource "hcloud_server" "default" {
 
   provisioner "remote-exec" {
     inline = [
-      "curl https://raw.githubusercontent.com/akirak/nixos-infect/flakes/nixos-infect | NIX_CHANNEL=nixos-22.11 FLAKE_URL=${local.nixos_flake} NIXOS_CONFIG_NAME=${local.nixos_config} NO_REBOOT=1 bash 2>&1 | tee /tmp/infect.log",
-      # "/nix/var/nix/profiles/system/bin/switch-to-configuration switch",
-      "systemd-run --on-active=1 shutdown -r now"
+      "apt update",
+      "apt install kexec-tools --yes --force"
     ]
   }
 }
