@@ -1,6 +1,6 @@
 locals {
-  nixos_config = "github:akirak/homelab/hcloud-basic-remote#hcloud-basic"
-  disko_config = "github:akirak/homelab/hcloud-basic-remote#hcloud"
+  nixos_config = "github:akirak/homelab/shu#shu"
+  disko_config = "github:akirak/homelab/shu#shu"
 }
 
 resource "hcloud_ssh_key" "default" {
