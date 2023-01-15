@@ -24,4 +24,5 @@ nixos-install \
 mkdir /persist
 echo "${nixos_config}" > /persist/config-flake
 
-systemctl reboot
+# Use `shutdown -r now` to only shutdown
+systemd-run --on-active=1 reboot
