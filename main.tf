@@ -1,6 +1,10 @@
 locals {
-  nixos_config = "github:akirak/homelab/shu#shu"
-  disko_config = "github:akirak/homelab/shu#shu"
+  nixos_config     = "github:akirak/homelab/shu#shu"
+  disko_config     = "github:akirak/homelab/shu#shu"
+  boot_ed25519_key = "/persist/boot_ed25519_key"
+  luks_key         = "/persist/luks-cryptroot.key"
+  luks_device      = "/dev/sda3"
+  luks_pass_file   = "/tmp/luks-passphrase"
 }
 
 resource "hcloud_ssh_key" "ephemeral_ssh_key" {
@@ -14,11 +18,20 @@ resource "local_sensitive_file" "private_key" {
   file_permission = "0600"
 }
 
+resource "local_sensitive_file" "luks_pass_file" {
+  filename = "luks_passphrase"
+  content  = "${var.luks_passphrase}\n"
+}
+
 resource "local_file" "nixos_installer" {
   filename = "install-nixos.sh"
   content = templatefile("${path.module}/install-nixos.sh", {
     "nixos_config" : local.nixos_config
     "disko_config" : local.disko_config
+    "boot_ed25519_key" : local.boot_ed25519_key
+    "luks_key" : local.luks_key
+    "luks_pass_file" : local.luks_pass_file
+    "luks_device" : local.luks_device
   })
 }
 
@@ -51,6 +64,17 @@ resource "hcloud_server" "shu" {
       # Keep the session open before the machine starts booting into NixOS
       "sleep 6"
     ]
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "mkdir -p /persist"
+    ]
+  }
+
+  provisioner "file" {
+    content     = "${var.luks_passphrase}\n"
+    destination = local.luks_pass_file
   }
 
   provisioner "remote-exec" {

@@ -11,3 +11,8 @@ variable "private_key" {
   type      = string
   sensitive = true
 }
+
+variable "luks_passphrase" {
+  type      = string
+  sensitive = true
+}
