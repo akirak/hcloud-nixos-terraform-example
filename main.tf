@@ -3,8 +3,8 @@ locals {
   disko_config = "github:akirak/homelab/shu#shu"
 }
 
-resource "hcloud_ssh_key" "default" {
-  name       = "default"
+resource "hcloud_ssh_key" "ephemeral_ssh_key" {
+  name       = "ephemeral_ssh_key"
   public_key = var.public_key
 }
 
@@ -22,8 +22,8 @@ resource "local_file" "nixos_installer" {
   })
 }
 
-resource "hcloud_server" "default" {
-  name        = "default"
+resource "hcloud_server" "shu" {
+  name        = "shu"
   image       = "debian-11"
   server_type = "cpx21"
   location    = "hil"
@@ -32,7 +32,7 @@ resource "hcloud_server" "default" {
     ipv6_enabled = true
   }
   ssh_keys = [
-    "${hcloud_ssh_key.default.name}",
+    "${hcloud_ssh_key.ephemeral_ssh_key.name}",
   ]
 
   connection {
