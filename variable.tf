@@ -16,3 +16,8 @@ variable "luks_passphrase" {
   type      = string
   sensitive = true
 }
+
+variable "cachix_agent_token" {
+  type      = string
+  sensitive = true
+}

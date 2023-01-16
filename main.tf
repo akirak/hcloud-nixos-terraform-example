@@ -1,10 +1,11 @@
 locals {
-  nixos_config     = "github:akirak/homelab/cachix-deploy#shu"
-  disko_config     = "github:akirak/homelab/cachix-deploy#shu"
-  boot_ed25519_key = "/persist/boot_ed25519_key"
-  luks_key         = "/persist/luks-cryptroot.key"
-  luks_device      = "/dev/sda3"
-  luks_pass_file   = "/tmp/luks-passphrase"
+  nixos_config                 = "github:akirak/homelab/cachix-deploy#shu"
+  disko_config                 = "github:akirak/homelab/cachix-deploy#shu"
+  boot_ed25519_key             = "/persist/boot_ed25519_key"
+  luks_key                     = "/persist/luks-cryptroot.key"
+  luks_device                  = "/dev/sda3"
+  luks_pass_file               = "/tmp/luks-passphrase"
+  cachix_agent_token_temp_file = "/tmp/cachix-agent.token"
 }
 
 resource "hcloud_ssh_key" "ephemeral_ssh_key" {
@@ -32,6 +33,7 @@ resource "local_file" "nixos_installer" {
     "luks_key" : local.luks_key
     "luks_pass_file" : local.luks_pass_file
     "luks_device" : local.luks_device
+    "cachix_agent_token_temp_file" : local.cachix_agent_token_temp_file
   })
 }
 
@@ -75,6 +77,13 @@ resource "hcloud_server" "shu" {
   provisioner "file" {
     content     = "${var.luks_passphrase}\n"
     destination = local.luks_pass_file
+  }
+
+  provisioner "file" {
+    content     = <<-TOKEN
+      CACHIX_AGENT_TOKEN=${var.cachix_agent_token}
+    TOKEN
+    destination = local.cachix_agent_token_temp_file
   }
 
   provisioner "remote-exec" {
