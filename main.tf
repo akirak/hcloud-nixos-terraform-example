@@ -1,6 +1,6 @@
 locals {
-  nixos_config     = "github:akirak/homelab/shu#shu"
-  disko_config     = "github:akirak/homelab/shu#shu"
+  nixos_config     = "github:akirak/homelab/cachix-deploy#shu"
+  disko_config     = "github:akirak/homelab/cachix-deploy#shu"
   boot_ed25519_key = "/persist/boot_ed25519_key"
   luks_key         = "/persist/luks-cryptroot.key"
   luks_device      = "/dev/sda3"
