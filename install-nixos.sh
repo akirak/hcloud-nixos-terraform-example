@@ -35,6 +35,9 @@ cat "${luks_pass_file}" | cryptsetup --key-file="${luks_key}" luksChangeKey ${lu
 mkdir -p /mnt/etc
 cp "${cachix_agent_token_temp_file}" /mnt/etc/cachix-agent.token
 
+mkdir -p /etc/nix
+echo 'accept-flake-config = true' >> /etc/nix/nix.conf
+
 nixos-install \
     --no-write-lock-file \
     --no-root-password \
