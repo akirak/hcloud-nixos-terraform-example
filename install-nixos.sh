@@ -40,6 +40,7 @@ nixos-install \
     --no-root-password \
     --no-channel-copy \
     --show-trace \
+    --option accept-flake-config true \
     --flake "${nixos_config}"
 
 # Use `shutdown -r now` to only shutdown
