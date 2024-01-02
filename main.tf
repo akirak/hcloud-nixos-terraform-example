@@ -69,7 +69,7 @@ resource "hcloud_server" "shu" {
   }
 
   provisioner "file" {
-    content     = "${var.luks_passphrase}\n"
+    source      = var.luks_passphrase_file
     destination = local.luks_pass_file
   }
 

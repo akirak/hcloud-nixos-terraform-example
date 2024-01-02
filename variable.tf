@@ -11,9 +11,8 @@ variable "private_key_file" {
   type      = string
 }
 
-variable "luks_passphrase" {
+variable "luks_passphrase_file" {
   type      = string
-  sensitive = true
 }
 
 variable "cachix_agent_token" {
