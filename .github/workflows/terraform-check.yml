@@ -14,17 +14,13 @@ jobs:
 
     steps:
 
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
       # Explicitly check out a branch if called by a workflow_call event.
       # Otherwise, check out the default branch.
         ref: ${{ inputs.ref }}
 
-    - uses: cachix/install-nix-action@v18
-      with:
-        extra_nix_config: |
-          access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
-          accept-flake-config = true
+    - uses: cachix/install-nix-action@v24
 
     - run: nix profile install .#opentofu
 
