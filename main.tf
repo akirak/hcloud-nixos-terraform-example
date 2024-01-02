@@ -13,11 +13,6 @@ resource "hcloud_ssh_key" "ephemeral_ssh_key" {
   public_key = file(var.public_key_file)
 }
 
-resource "local_sensitive_file" "luks_pass_file" {
-  filename = "luks_passphrase"
-  content  = "${var.luks_passphrase}\n"
-}
-
 resource "local_file" "nixos_installer" {
   filename = "install-nixos.sh"
   content = templatefile("${path.module}/install-nixos.sh", {
