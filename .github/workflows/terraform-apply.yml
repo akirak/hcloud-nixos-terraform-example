@@ -27,18 +27,14 @@ jobs:
 
     steps:
 
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
-    - uses: cachix/install-nix-action@v18
-      with:
-        extra_nix_config: |
-          access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
-          accept-flake-config = true
+    - uses: cachix/install-nix-action@v24
 
-    - run: nix profile install .#terraform
+    - run: nix profile install .#opentofu
 
-    - run: terraform init
+    - run: tofu init
 
-    - run: terraform validate
+    - run: tofu validate
 
-    - run: terraform apply -auto-approve -input=false
+    - run: tofu apply -auto-approve -input=false

@@ -1,6 +1,6 @@
 .gcroots
 
-# Terraform
+# Terraform/OpenTofu
 *.tfvars
 *.tfstate
 *.tfstate.*

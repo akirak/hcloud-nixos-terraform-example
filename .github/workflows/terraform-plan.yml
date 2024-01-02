@@ -18,23 +18,19 @@ jobs:
 
     steps:
 
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
-    - uses: cachix/install-nix-action@v18
-      with:
-        extra_nix_config: |
-          access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
-          accept-flake-config = true
+    - uses: cachix/install-nix-action@v24
 
-    - run: nix profile install .#terraform
+    - run: nix profile install .#opentofu
 
-    - run: terraform init
+    - run: tofu init
 
-    - run: terraform validate
+    - run: tofu validate
 
     - uses: aquasecurity/tfsec-pr-commenter-action@v1.3.1
       with:
         tfsec_args: --soft-fail
         github_token: ${{ github.token }}
 
-    - run: terraform plan
+    - run: tofu plan
