@@ -14,7 +14,7 @@ resource "hcloud_ssh_key" "ephemeral_ssh_key" {
 }
 
 resource "local_sensitive_file" "private_key" {
-  filename        = "${path.module}/terraform-cloud.pem"
+  filename        = "id_ed25519"
   content         = var.private_key
   file_permission = "0600"
 }
