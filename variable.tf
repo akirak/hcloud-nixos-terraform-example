@@ -7,9 +7,8 @@ variable "public_key" {
   type = string
 }
 
-variable "private_key" {
+variable "private_key_file" {
   type      = string
-  sensitive = true
 }
 
 variable "luks_passphrase" {
