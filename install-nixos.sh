@@ -30,7 +30,8 @@ luks_key="/mnt${luks_key}"
 mkdir -p $(dirname $luks_key)
 cp "${luks_key}" "$luks_key"
 
-cat "${luks_pass_file}" | cryptsetup --key-file="${luks_key}" luksChangeKey ${luks_device}
+cat "${luks_pass_file}" | cryptsetup --key-file="${luks_key}" luksAddKey ${luks_device}
+cat "${luks_pass_file}" | cryptsetup luksOpen --test-passphrase ${luks_device}
 
 mkdir -p /mnt/etc
 cp "${cachix_agent_token_temp_file}" /mnt/etc/cachix-agent.token
