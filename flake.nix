@@ -31,7 +31,7 @@
           ];
         };
         packages = {
-          # Expose terraform package to allow installation on CI
+          # Expose opentofu package to allow installation on CI
           inherit (pkgs) opentofu;
         };
       };

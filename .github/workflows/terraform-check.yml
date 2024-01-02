@@ -26,8 +26,8 @@ jobs:
           access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
           accept-flake-config = true
 
-    - run: nix profile install .#terraform
+    - run: nix profile install .#opentofu
 
-    - run: terraform version
+    - run: tofu version
 
-    - run: terraform fmt -check
+    - run: tofu fmt -check
