@@ -14,7 +14,12 @@ dd if=/dev/urandom of=${luks_key} bs=512 count=4
 # sync between them.
 $${disko_command} --mode create --flake "${disko_config}"
 sync
+
+fdisk -l
+
 $${disko_command} --mode mount --flake "${disko_config}"
+
+findmnt -m --real
 
 mkdir -p /mnt/persist
 echo "${nixos_config}" > /mnt/persist/config-flake
@@ -30,6 +35,8 @@ luks_key="/mnt${luks_key}"
 mkdir -p $(dirname $luks_key)
 cp "${luks_key}" "$luks_key"
 
+wc -c "${luks_pass_file}"
+
 cat "${luks_pass_file}" | cryptsetup --key-file="${luks_key}" luksAddKey ${luks_device}
 cat "${luks_pass_file}" | cryptsetup luksOpen --test-passphrase ${luks_device}
 
@@ -43,6 +50,10 @@ nixos-install \
     --show-trace \
     --option accept-flake-config true \
     --flake "${nixos_config}"
+
+findmnt -m --real
+
+ls /mnt
 
 # Use `shutdown -r now` to only shutdown
 systemd-run --on-active=1 reboot
