@@ -3,7 +3,7 @@ variable "hcloud_token" {
   sensitive = true
 }
 
-variable "public_key" {
+variable "public_key_file" {
   type = string
 }
 
