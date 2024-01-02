@@ -47,7 +47,7 @@ resource "hcloud_server" "shu" {
     ipv6_enabled = true
   }
   ssh_keys = [
-    "${hcloud_ssh_key.ephemeral_ssh_key.name}",
+    "${hcloud_ssh_key.ephemeral_ssh_key.id}",
   ]
 
   connection {
