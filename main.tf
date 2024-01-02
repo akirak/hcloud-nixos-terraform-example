@@ -40,6 +40,7 @@ resource "local_file" "nixos_installer" {
 resource "hcloud_server" "shu" {
   name        = "shu"
   image       = "debian-12"
+  arch        = "x86"
   server_type = "cpx21"
   location    = "hil"
   public_net {
