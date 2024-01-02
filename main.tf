@@ -13,12 +13,6 @@ resource "hcloud_ssh_key" "ephemeral_ssh_key" {
   public_key = file(var.public_key_file)
 }
 
-resource "local_sensitive_file" "private_key" {
-  filename        = "${path.module}/id_hcloud_ephemeral"
-  source          = var.private_key_file
-  file_permission = "0600"
-}
-
 resource "local_sensitive_file" "luks_pass_file" {
   filename = "luks_passphrase"
   content  = "${var.luks_passphrase}\n"
@@ -54,7 +48,7 @@ resource "hcloud_server" "shu" {
     type        = "ssh"
     user        = "root"
     host        = self.ipv4_address
-    private_key = local_sensitive_file.private_key.content
+    private_key = file(var.private_key_file)
   }
 
   provisioner "remote-exec" {
