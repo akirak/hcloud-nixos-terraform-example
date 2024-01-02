@@ -1,5 +1,6 @@
 {
   inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
   };
   outputs = {
@@ -26,12 +27,12 @@
       }: {
         devShells.default = pkgs.mkShell {
           buildInputs = [
-            pkgs.terraform
+            pkgs.opentofu
           ];
         };
         packages = {
           # Expose terraform package to allow installation on CI
-          inherit (pkgs) terraform;
+          inherit (pkgs) opentofu;
         };
       };
     };
