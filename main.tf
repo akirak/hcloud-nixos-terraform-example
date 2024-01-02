@@ -9,12 +9,12 @@ locals {
 }
 
 resource "hcloud_ssh_key" "ephemeral_ssh_key" {
-  name       = "ephemeral_ssh_key"
-  public_key = var.public_key
+  name       = "id_hcloud_ephemeral.pub"
+  public_key = file(var.public_key_file)
 }
 
 resource "local_sensitive_file" "private_key" {
-  filename        = "${path.module}/terraform-cloud.pem"
+  filename        = "${path.module}/id_hcloud_ephemeral"
   source          = var.private_key_file
   file_permission = "0600"
 }
