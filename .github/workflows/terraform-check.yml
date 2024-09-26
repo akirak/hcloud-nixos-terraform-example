@@ -20,7 +20,7 @@ jobs:
       # Otherwise, check out the default branch.
         ref: ${{ inputs.ref }}
 
-    - uses: cachix/install-nix-action@V28
+    - uses: cachix/install-nix-action@v29
 
     - run: nix profile install .#opentofu
 
