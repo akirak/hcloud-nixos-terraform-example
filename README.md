@@ -1,10 +1,10 @@
-# Continuous Deployment Example of NixOS to Hetzner Cloud using Terraform on GitHub Action
+# An Example of Deploying NixOS to Hetzner Cloud using Terraform from GitHub Action
 
 This repository contains a set of GitHub workflows used to provision and destroy
-a VPS instance on [Hetzner Cloud](https://www.hetzner.com/cloud/). The instance
-runs a NixOS image available from
-[nix-community/nixos-images](https://github.com/nix-community/nixos-images). The
-approach is based on
+a NixOS VPS instance on [Hetzner Cloud](https://www.hetzner.com/cloud/). It uses
+a kexec image available from
+[nix-community/nixos-images](https://github.com/nix-community/nixos-images) to
+bootstrap an installation environment. The approach is based on
 [nixos-anywhere](https://github.com/nix-community/nixos-anywhere), but the
 installation process is customized to serve specific needs.
 
