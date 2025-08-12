@@ -14,7 +14,7 @@ jobs:
 
     steps:
 
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
       with:
       # Explicitly check out a branch if called by a workflow_call event.
       # Otherwise, check out the default branch.
